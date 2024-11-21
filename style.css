@@ -4,6 +4,7 @@
   --background-color: #F3F3F3;
   --card-background: #F3F3F3;
   --line-color: #E6E6E6;
+  --black-color: #0B0909
 }
 
 @font-face {
@@ -32,9 +33,10 @@ body {
 
 header {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  background-color: #000;
+  padding: 1rem;
+  background-color: var(--black-color);
   width: 100%;
   height: 96px;
   position: fixed;
@@ -43,7 +45,9 @@ header {
 }
 
 main {
-  padding-top: 0px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
 }
 
 nav {
@@ -57,8 +61,8 @@ nav {
 }
 
 .logo img {
-  width: 64px;
-  height: 64px;
+  width: 170px;
+  height: 50px;
 }
 
 nav ul {
@@ -74,11 +78,16 @@ nav ul li {
 nav ul li a {
   color: var(--secondary-color);
   font-family: 'Poppins', sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 36px;
   text-align: left;
-  
+  text-decoration: none;
+  position: relative;
+}
+
+nav ul li a.active {
+  text-decoration: underline;
 }
 
 #inicio {
@@ -96,7 +105,7 @@ h1 {
   font-family: 'Steel', sans-serif;  
   font-size: 88px;
   font-weight: 5;
-  margin-top: 119px;
+  margin-top: 80px;
 }
 
 .subtitle {
@@ -108,8 +117,10 @@ h1 {
 .card-container {
   display: flex;
   justify-content: space-between;
+  align-items: stretch; /* Make sure all cards stretch to the same height */
   margin: 2rem auto;
-  max-width: 1362px;
+  width:  1362px;
+  height: 500px;
   background-color: var(--card-background);
   border-radius: 20px;
   padding: 2rem;
@@ -117,6 +128,10 @@ h1 {
 }
 
 .card {
+  display: flex;
+  flex-direction: column; /* Stack card content vertically */
+  justify-content: space-between; /* Ensures equal spacing between elements */
+  gap: 20px;
   flex: 1;
   padding: 2rem;
   background: none;
@@ -138,31 +153,42 @@ h1 {
 
 .card h2 {
   color: var(--primary-color);
-  margin-bottom: 48px;
+  margin-bottom: 15px;
   font-size: 32px;
   font-weight: bold;
 }
 
 .card p {
-  color: #000;
+  flex-grow: 1;
+  color: var(--black-color);
   font-family: 'Poppins', sans-serif;
-  margin-bottom: 43px;
-  margin-left: 48px;
-  font-size: 24px;
+  margin-left: 0; /* Remove left margin to center the text */
+  font-size: 20px;
   font-weight: 500;
   line-height: 36px;
   max-width: 358px;
+  text-align: center; /* Center text horizontally */
 }
 
 .card button {
-  background-color: var(--primary-color);
-  color: var(--secondary-color);
+  width: 189px; /* Fixed width */
+  height: 36px; /* Fixed height */
+  border-radius: 48px; /* Adjust border-radius if needed */
+  background-color: var(--primary-color); /* Button background color */
+  color: var(--secondary-color); /* Button text color */
   border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 25px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  line-height: 36px;
+  
+  display: flex;
+  justify-content: center; /* Horizontal centering of text inside the button */
+  align-items: center; /* Vertical centering of text inside the button */
+  text-align: center;
+
+  margin: 0 auto; /* Center the button horizontally */
+  margin-top: auto; /* Pushes the button to the bottom of the card */
 }
 
 @media (max-width: 388px) {
@@ -185,42 +211,67 @@ h1 {
   padding: 4rem 2rem;
   color: var(--background-color);
   text-align: center;
+  overflow: hidden;
+  width: 100%;
 }
 
 .section-title {
   font-family: '1979', sans-serif;  
   font-size: 80px;
   font-weight: 400;
-  margin-bottom: 2rem;
+  margin-bottom: 0px;
   color: var(--primary-color);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .carousel-container {
   position: relative;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 1600px; /* Set the desired width for the carousel container */
+  height: 900px;
+  width: 100%; /* Ensure it takes full width up to max-width */
+  margin: 0 auto; /* Center the carousel */
+  overflow: hidden;
+  margin-top: 0;
 }
 
 .carousel {
   display: flex;
-  overflow: hidden;
+  transition: transform 0.5s ease;
+  will-change: transform;
 }
 
 .carousel-item {
-  flex: 0 0 100%;
-  padding: 0;
-  background-color: var(--card-background);
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.5s ease;
-  overflow: hidden;
+  flex: 0 0 100%; /* Each item takes full width on small screens */
+  max-width: 100%; /* Set max-width to 100% */
+  height: 400px; /* Adjust as needed */
+  padding: 100px;
+  box-sizing: border-box;
+}
+
+/* Add a media query for larger screens */
+@media (min-width: 768px) {
+  .carousel-item {
+    flex: 0 0 33.33%; /* Each item takes up one-third of the carousel width */
+    max-width: 500px; /* Set a max-width for each item if needed */
+  }
+}
+
+.carousel-item.active {
+  opacity: 1; /* Fully visible for active items */
+  transform: scale(1.1);
+  transition: transform 0.5s ease;  /* Slightly scale up the active item */
+  z-index: 1; /* Bring active item to the front */
+}
+
+.carousel-item.activeInstant {
+  opacity: 1; /* Fully visible for active items */
+  transform: scale(1.2);
+  z-index: 1; /* Bring active item to the front */
 }
 
 .carousel-image {
   position: relative;
-  width: 100%;
-  height: 200px;
+  width: 400px;
+  height: 371.5px;
   overflow: hidden;
 }
 
@@ -253,12 +304,15 @@ h1 {
   color: #333;
   padding: 1.5rem;
   list-style-type: none;
+  margin-top: 20px;
 }
 
 .carousel-item ul li {
   margin-bottom: 0.5rem;
   position: relative;
   padding-left: 1.5rem;
+  font-size: 16px;
+  line-height: 1.4;
 }
 
 .carousel-item ul li::before {
@@ -283,11 +337,11 @@ h1 {
 }
 
 .carousel-arrow.left {
-  left: -3rem;
+  left: 20px;
 }
 
 .carousel-arrow.right {
-  right: -3rem;
+  right: 20px;
 }
 
 @media (max-width: 768px) {
@@ -307,4 +361,10 @@ h1 {
   .carousel-arrow.right {
     right: -2rem;
   }
+}
+
+/* Add/modify these rules */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
 }
